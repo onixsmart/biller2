@@ -265,6 +265,7 @@ $(document).ready(function() {
 
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
         tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
+        tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(line_total*1.18, true));
 
         pos_total_row();
 
@@ -291,6 +292,7 @@ $(document).ready(function() {
         __write_number(tr.find('input.pos_unit_price_inc_tax'), unit_price_inc_tax);
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
         tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
+        tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(line_total*1.18, true));
         pos_each_row(tr);
         pos_total_row();
         round_row_to_iraqi_dinnar(tr);
@@ -336,6 +338,7 @@ $(document).ready(function() {
         __write_number(tr.find('input.pos_unit_price'), unit_price);
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
         tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
+        tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(line_total*1.18, true));
 
         pos_each_row(tr);
         pos_total_row();
@@ -426,6 +429,7 @@ $(document).ready(function() {
             __write_number(tr.find('input.pos_unit_price_inc_tax'), unit_price_inc_tax);
             __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
             tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
+            tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(line_total*1.18, true));
             pos_each_row(tr);
             pos_total_row();
             round_row_to_iraqi_dinnar(tr);
@@ -1340,6 +1344,7 @@ function pos_product_row(variation_id, purchase_line_id = null) {
                     //For initial discount if present
                     var line_total = __read_number(this_row.find('input.pos_line_total'));
                     this_row.find('span.pos_line_total_text').text(line_total);
+                    this_row.find('span.pos_line_importe_text').text(line_total*1.18, true);
 
                     pos_total_row();
 
@@ -1754,6 +1759,7 @@ $('table#pos_table tbody').on('change', 'input.pos_line_total', function() {
         pos_form_validator.element(quantity_element);
     }
     tr.find('span.pos_line_total_text').text(__currency_trans_from_en(subtotal, true));
+    tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(subtotal*1.18, true));
 
     pos_total_row();
 });

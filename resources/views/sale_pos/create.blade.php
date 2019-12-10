@@ -206,6 +206,9 @@
 									<th class="text-center col-md-2">
 										@lang('sale.subtotal')
 									</th>
+									<th class="text-center col-md-2">
+										@lang('sale.total')
+									</th>
 									<th class="text-center"><i class="fa fa-close" aria-hidden="true"></i></th>
 								</tr>
 							</thead>
