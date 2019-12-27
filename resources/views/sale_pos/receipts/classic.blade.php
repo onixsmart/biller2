@@ -76,6 +76,9 @@
 				{!! $receipt_details->invoice_heading !!}
 			</h3>
 		@endif
+		@if(!empty($tituloFactura) )
+			<h3> {{ $tituloFactura }} </h3>
+		@endif
 
 		<!-- Invoice  number, Date  -->
 		<p style="width: 100% !important" class="word-wrap">
@@ -101,8 +104,20 @@
 				<!-- customer info -->
 				@if(!empty($receipt_details->customer_name))
 					<br/>
-					<b>{{ $receipt_details->customer_label }}</b> {{ $receipt_details->customer_name }} <br>
+					<b>{{ $receipt_details->customer_label }}</b> {{ $receipt_details->customer_name }}
 				@endif
+
+				@if(!empty($RUCClient))
+					<br>
+					<b> {{ $tipoCliente }} </b> {{ $RUCClient }} 
+				@endif
+				@if($clienteDirec != "")
+					<br>
+					<b> Dirección: </b>{{ $clienteDirec }} 
+				@endif
+
+
+
 				@if(!empty($receipt_details->customer_info))
 					{!! $receipt_details->customer_info !!}
 				@endif
@@ -127,7 +142,7 @@
 				@endif
 			</span>
 
-			<span class="pull-right text-left">
+			<span class="pull-right text-left"> 
 				<b>{{$receipt_details->date_label}}</b> {{$receipt_details->invoice_date}}
 
 				@if(!empty($receipt_details->serial_no_label) || !empty($receipt_details->repair_serial_no))
@@ -204,8 +219,8 @@
                             @if(!empty($line['product_expiry'])), {{$line['product_expiry_label']}}:  {{$line['product_expiry']}} @endif 
                         </td>
 						<td>{{$line['quantity']}} {{$line['units']}} </td>
-						<td>{{$line['unit_price_inc_tax']}}</td>
-						<td>{{$line['line_total']}}</td>
+						<td>{{bcdiv($line['unit_price_inc_tax']*1.18, 1, 2)}}</td>
+						<td>{{bcdiv($line['line_total']*1.18, 1, 2)}}</td>
 					</tr>
 					@if(!empty($line['modifiers']))
 						@foreach($line['modifiers'] as $modifier)
@@ -251,7 +266,7 @@
 				@endforeach
 			@endif
 
-			<!-- Total Paid-->
+			<!-- Total Paid
 			@if(!empty($receipt_details->total_paid))
 				<tr>
 					<th>
@@ -261,7 +276,7 @@
 						{{$receipt_details->total_paid}}
 					</td>
 				</tr>
-			@endif
+			@endif-->
 
 			<!-- Total Due-->
 			@if(!empty($receipt_details->total_due))
@@ -290,7 +305,7 @@
 		{{$receipt_details->additional_notes}}
 	</div>
 
-	<div class="col-xs-6">
+	<div class="col-xs-12">
         <div class="table-responsive">
           	<table class="table">
 				<tbody>
@@ -367,6 +382,12 @@
     </div>
 </div>
 
+{{ $solesLetra }}
+
+<div align="center">
+			{!! QrCode::size(150)->generate($contentQr); !!}
+</div>
+
 @if($receipt_details->show_barcode)
 	<div class="row">
 		<div class="col-xs-12">
@@ -383,3 +404,10 @@
 		</div>
 	</div>
 @endif
+<div align="center">
+	<FONT SIZE=2>
+		REPRESENTACION IMPRESA DEL COMPROBANTE ELECTRONICO. </br>
+		Comprobante emitido a través de  </br>
+	</FONT>
+	<b>www.biller.pe</b>
+</div>
