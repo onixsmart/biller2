@@ -384,9 +384,9 @@
 
 {{ $solesLetra }}
 
-<div align="center">
+<!--<div align="center">
 			{!! QrCode::size(150)->generate($contentQr); !!}
-</div>
+</div>-->
 
 @if($receipt_details->show_barcode)
 	<div class="row">
