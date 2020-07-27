@@ -129,7 +129,7 @@
 
 	</td>
 
-	<td>
+	<td class="v-center">
 		{{-- If edit then transaction sell lines will be present --}}
 		@if(!empty($product->transaction_sell_lines_id))
 			<input type="hidden" name="products[{{$row_count}}][transaction_sell_lines_id]" class="form-control" value="{{$product->transaction_sell_lines_id}}">
@@ -197,9 +197,9 @@
 		</div>
 		
 		<input type="hidden" name="products[{{$row_count}}][product_unit_id]" value="{{$product->unit_id}}">
-		@if(count($sub_units) > 0)
+		@if(count($sub_units) > 1)
 			<br>
-			<select name="products[{{$row_count}}][sub_unit_id]" class="form-control input-sm sub_unit" style="display: none;">
+			<select name="products[{{$row_count}}][sub_unit_id]" class="form-control input-sm sub_unit" >
                 @foreach($sub_units as $key => $value)
                     <option value="{{$key}}" data-multiplier="{{$value['multiplier']}}" data-unit_name="{{$value['name']}}" data-allow_decimal="{{$value['allow_decimal']}}" @if(!empty($product->sub_unit_id) && $product->sub_unit_id == $key) selected @endif>
                         {{$value['name']}}
@@ -207,7 +207,8 @@
                 @endforeach
            </select>
 		@else
-			{{$product->unit}}
+		{{-- Comenté el codigo que hace parecer la letras UND bajo el input de cantidad --}}
+			{{-- $product->unit --}}
 		@endif
 
 		<input type="hidden" class="base_unit_multiplier" name="products[{{$row_count}}][base_unit_multiplier]" value="{{$multiplier}}">
@@ -276,7 +277,7 @@
 		<span class="display_currency pos_line_total_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) hide @endif" data-currency_symbol="true">{{$product->quantity_ordered*$unit_price_inc_tax}}</span>
 	</td>
 	<td class="text-center v-center">
-		<span class="display_currency pos_line_importe_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) hide @endif" data-currency_symbol="true">{{$product->quantity_ordered*$unit_price_inc_tax*1.18}}</span>
+		<span class="display_currency pos_line_importe_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) @endif" data-currency_symbol="true">{{$product->quantity_ordered*$unit_price_inc_tax*1.18}}</span>
 	</td>
 	<td class="text-center">
 		<h3><i class="fa fa-close text-danger pos_remove_row cursor-pointer" aria-hidden="true"></i></h3>

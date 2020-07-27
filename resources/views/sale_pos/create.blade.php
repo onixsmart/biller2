@@ -122,7 +122,7 @@
 							<div class="form-group" style="width: 100% !important">
 								<div class="input-group">
 									<span class="input-group-addon">
-										<i class="fa fa-user"></i>
+										<i class="fa fa-book"></i>
 									</span>
 									<select name="facture_id" id="facture_id" class="form-control" required >
 										<option selected disabled>Seleccione el tipo de comprobante</option>

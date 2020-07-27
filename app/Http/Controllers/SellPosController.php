@@ -354,10 +354,13 @@ class SellPosController extends Controller
                     $ref_count = $this->transactionUtil->setAndGetReferenceCount('subscription');
                     $input['subscription_no'] = $this->transactionUtil->generateReferenceNumber('subscription', $ref_count);
                 }
-                /*if(!empty($request->get('facture_id') )){
+                
+                //Aqui esta el problema
+                if(!empty($request->get('facture_id'))){
                     $id_fac = $request->get('facture_id');
                     $input['invoice_no'] =  $this->getInvoiceNumber($id_fac, 'final');
-                }*/
+                }
+                
 
                 if ($is_direct_sale) {
                     $input['invoice_scheme_id'] = $request->input('invoice_scheme_id');
@@ -495,7 +498,7 @@ class SellPosController extends Controller
             DB::rollBack();
 
             \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
-            $msg = trans("messages.something_went_wrong")." DEL TRY";
+            $msg = trans("messages.something_went_wrong")." DEBUG: ".$request->get('facture_id');
                 
             if (get_class($e) == \App\Exceptions\PurchaseSellMismatch::class) {
                 $msg = $e->getMessage();
@@ -637,6 +640,7 @@ class SellPosController extends Controller
         
         return $output;
     }
+
     function getTituloFact($tmp){
         $codInvoice ="";
         $nameInvoice = DB::table('invoice_schemes')->where('prefix', $tmp."-")->value('name');
@@ -915,7 +919,56 @@ class SellPosController extends Controller
         //Zi hack --> return ucfirst($tex);
         $end_num=ucfirst($tex).' con '.$float[1].'/100 soles';
         return $end_num; 
-    } 
+    }
+
+    private function getInvoiceNumber($id_scheme, $status)
+    {
+        if ($status == 'final') {
+        $scheme = BusinessUtil::getInvoiceId($id_scheme);  
+            // $scheme = $this->getInvoiceS($business_id, $location_id);
+
+            if ($scheme->scheme_type == 'blank') {
+                $prefix = $scheme->prefix;
+            } else {
+                $prefix = date('Y') . '-';
+            }
+
+            //Count
+            $count = $scheme->start_number + $scheme->invoice_count;
+            $count = str_pad($count, $scheme->total_digits, '0', STR_PAD_LEFT);
+
+            //Prefix + count
+            $invoice_no = $prefix . $count;
+
+            //Increment the invoice count
+            $scheme->invoice_count = $scheme->invoice_count + 1;
+            $scheme->save();
+
+            return $invoice_no;
+        } else {
+            return str_random(5);
+        }
+    }
+
+    private function getInvoiceS($business_id, $location_id)
+    {
+        $scheme_id = BusinessLocation::where('business_id', $business_id)
+                    ->where('id', $location_id)
+                    ->first()
+                    ->invoice_scheme_id;
+        if (!empty($scheme_id) && $scheme_id != 0) {
+            $scheme = InvoiceScheme::find($scheme_id);
+        }
+
+        //Check if scheme is not found then return default scheme
+        if (empty($scheme)) {
+            $scheme = InvoiceScheme::where('business_id', $business_id)
+                    ->where('is_default', 1)
+                    ->first();
+        }
+
+        return $scheme;
+    }
 
     /**
      * Display the specified resource.
@@ -1184,8 +1237,22 @@ class SellPosController extends Controller
         $edit_price = auth()->user()->can('edit_product_price_from_pos_screen');
         $shipping_statuses = $this->transactionUtil->shipping_statuses();
 
+        // agregado santiago
+        $business_id = request()->session()->get('user.business_id');
+
+        $business_locations = BusinessLocation::forDropdown($business_id, false);
+        $customers = Contact::customersDropdown($business_id, false);
+        $factures = BusinessUtil::getInvoiceLayout($business_id);
+
+        $default_location = null;
+        if (count($business_locations) == 1) {
+            foreach ($business_locations as $id => $name) {
+                $default_location = $id;
+            }
+        }
+
         return view('sale_pos.edit')
-            ->with(compact('business_details', 'taxes', 'payment_types', 'walk_in_customer', 'sell_details', 'transaction', 'payment_lines', 'location_printer_type', 'shortcuts', 'commission_agent', 'categories', 'pos_settings', 'change_return', 'types', 'customer_groups', 'brands', 'accounts', 'price_groups', 'waiters', 'redeem_details', 'edit_price', 'edit_discount', 'shipping_statuses'));
+            ->with(compact('factures', 'default_location', 'business_details', 'taxes', 'payment_types', 'walk_in_customer', 'sell_details', 'transaction', 'payment_lines', 'location_printer_type', 'shortcuts', 'commission_agent', 'categories', 'pos_settings', 'change_return', 'types', 'customer_groups', 'brands', 'accounts', 'price_groups', 'waiters', 'redeem_details', 'edit_price', 'edit_discount', 'shipping_statuses'));
     }
 
     /**

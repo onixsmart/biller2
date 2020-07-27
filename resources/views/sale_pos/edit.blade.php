@@ -108,6 +108,22 @@
 						@endif
 					</div>
 					<div class="row">
+					<div class="@if(!empty($factures)) col-sm-6 @else col-sm-6 @endif">
+							<div class="form-group" style="width: 100% !important">
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="fa fa-book"></i>
+									</span>
+									<select name="facture_id" id="facture_id" class="form-control" required >
+										<option selected disabled>Seleccione el tipo de comprobante</option>
+										@foreach($factures as $item)
+											<option value="{{ $item->id }}">{{ $item->name }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						
 						<div class="@if(!empty($commission_agent)) col-sm-4 @else col-sm-6 @endif">
 							<div class="form-group">
 								<div class="input-group">
@@ -138,19 +154,6 @@
 							</div>
 						</div>
 						@endif
-						<div class="@if(!empty($commission_agent)) col-sm-4 @else col-sm-6 @endif">
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-btn">
-										<button type="button" class="btn btn-default bg-white btn-flat" data-toggle="modal" data-target="#configure_search_modal" title="{{__('lang_v1.configure_product_search')}}"><i class="fa fa-barcode"></i></button>
-									</div>
-									{!! Form::text('search_product', null, ['class' => 'form-control mousetrap', 'id' => 'search_product', 'placeholder' => __('lang_v1.search_product_placeholder'), 'autofocus']); !!}
-									<span class="input-group-btn">
-										<button type="button" class="btn btn-default bg-white btn-flat pos_add_quick_product" data-href="{{action('ProductController@quickAdd')}}" data-container=".quick_add_product_modal"><i class="fa fa-plus-circle text-primary fa-lg"></i></button>
-									</span>
-								</div>
-							</div>
-						</div>
 
 						<!-- Call restaurant module if defined -->
 				        @if(in_array('tables' ,$enabled_modules) || in_array('service_staff' ,$enabled_modules))
