@@ -8,7 +8,7 @@
 			<div class="row">
 				<div class="form-group col-xs-12 @if(!auth()->user()->can('edit_product_price_from_sale_screen')) hide @endif">
 					<label>@lang('sale.unit_price')</label>
-						<input type="text" name="products[{{$row_count}}][unit_price]" class="form-control pos_unit_price input_number mousetrap" value="{{@num_format(!empty($product->unit_price_before_discount) ? $product->unit_price_before_discount : $product->default_sell_price)}}">
+						<input type="text" name="products[{{$row_count}}][unit_price]" class="form-control pos_unit_price input_number mousetrap" value="{{@num_format(!empty($product->sell_price_inc_tax) ? $product->sell_price_inc_tax : $product->default_sell_price)}}">
 				</div>
 				@php
 					$discount_type = !empty($product->line_discount_type) ? $product->line_discount_type : 'fixed';
