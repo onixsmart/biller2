@@ -140,7 +140,8 @@ class Util
      */
     public function payment_types()
     {
-        $payment_types = ['cash' => __('lang_v1.cash'), 'card' => __('lang_v1.card'), 'cheque' => __('lang_v1.cheque'), 'bank_transfer' => __('lang_v1.bank_transfer'), 'other' => __('lang_v1.other')];
+        //comentario Andres: he quitado la opcion de pago tarjeta (card): 'card' => __('lang_v1.card'),
+        $payment_types = ['cash' => __('lang_v1.cash'), 'cheque' => __('lang_v1.cheque'), 'bank_transfer' => __('lang_v1.bank_transfer'), 'other' => __('lang_v1.other')];
 
         $custom_labels = !empty(session('business.custom_labels')) ? json_decode(session('business.custom_labels'), true) : [];
 

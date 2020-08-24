@@ -56,7 +56,9 @@
 <div class="payment_details_div @if( $payment_line['method'] !== 'bank_transfer' ) {{ 'hide' }} @endif" data-type="bank_transfer" >
 	<div class="col-md-12">
 		<div class="form-group">
-			{!! Form::label("bank_account_number_$row_index",__('lang_v1.bank_account_number')) !!}
+			<!--Comentario Andres: cambio
+				Form::label("bank_account_number_$row_index",__('lang_v1.bank_account_number')) -->
+			{!! Form::label("transaction_no_2_$row_index", __('lang_v1.transaction_no')) !!}
 			{!! Form::text( "payment[$row_index][bank_account_number]", $payment_line['bank_account_number'], ['class' => 'form-control', 'placeholder' => __('lang_v1.bank_account_number'), 'id' => "bank_account_number_$row_index"]); !!}
 		</div>
 	</div>

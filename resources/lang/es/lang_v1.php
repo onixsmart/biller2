@@ -140,7 +140,7 @@ return [
 "year" => "Año",
 "security_code" => "Código de seguridad",
 "cheque_no" => "Número de cheque",
-"bank_account_number" => "Número de Cuenta Bancaria",
+"bank_account_number" => "Número de Voucher",
 "paid" => "Pagado",
 "due" => "Debido",
 "partial" => "Parcial",
