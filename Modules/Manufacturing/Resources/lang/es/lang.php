@@ -39,4 +39,15 @@ return [
 "disable_editing_ingredient_qty" => "Desactiva la edición de cantidad de ingredientes en producción",
 "manufacturing_report" => "Informe de fabricación",
 "total_production" => "Producción total",
+'copy_from_recipe' => 'Copiar de otra receta',
+'update_product_price' => 'Actualizar precio de producto',
+'price_updated_live' => 'El precio se actualiza en base al costo de los ingredientes',
+'add_ingredients_tooltip' => 'Seleccion la ubicación del negocio y el producto para mostrar los ingredientes aqui',
+'enable_editing_product_price_after_production' => 'Actualizar el precio del producto basado en el costo de producción, al finalizar el proceso de producción',
+'update_product_price_help' => 'El precio del producto será actualizado de acuerdo al precio unitario de la receta',
+'waste_percent' => 'Porcentaje de desperdicio',
+'final_quantity' => 'Cantidad total',
+'add_ingredient_group' => 'Agregar paso de producción',
+'ingredient_group_tooltip' => 'Agregar el paso de producción con un nombre especifico, descripción e ingrediente diferente.',
+
 ];
