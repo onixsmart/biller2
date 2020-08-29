@@ -220,6 +220,9 @@
               @can('sell.view')
                 <li class="{{ $request->segment(1) == 'pos' && $request->segment(2) == null ? 'active' : '' }}" ><a href="{{action('SellPosController@index')}}"><i class="fa fa-list"></i>@lang('sale.list_pos')</a></li>
               @endcan
+              @can('resumen.access')
+                <li class="{{ $request->segment(1) == 'resumen' ? 'active' : '' }}" ><a href="{{action('ResumenPagosController@index')}}"><i class="fa fa-percent"></i>Resumen diario</a></li>
+              @endcan
               @can('sell.create')
                 <li class="{{ $request->segment(1) == 'pos' && $request->segment(2) == 'create' ? 'active' : '' }}"><a href="{{action('SellPosController@create')}}"><i class="fa fa-plus-circle"></i>@lang('sale.pos_sale')</a></li>
                 <li class="{{ $request->segment(1) == 'sells' && $request->segment(2) == 'drafts' ? 'active' : '' }}" ><a href="{{action('SellController@getDrafts')}}"><i class="fa fa-pencil-square" aria-hidden="true"></i>@lang('lang_v1.list_drafts')</a></li>
@@ -474,6 +477,9 @@
             @can('business_settings.access')
               <li class="{{ $request->segment(1) == 'business' ? 'active' : '' }}">
                 <a href="{{action('BusinessController@getBusinessSettings')}}" id="tour_step2"><i class="fa fa-cogs"></i> @lang('business.business_settings')</a>
+              </li>
+              <li class="{{ $request->segment(1) == 'sunat' ? 'active' : '' }}">
+                <a href="{{ action('SunatController@index')}}"><i class="fa fa-folder"></i> <span>Certificado digital</span></a>
               </li>
               <li class="{{ $request->segment(1) == 'business-location' ? 'active' : '' }}" >
                 <a href="{{action('BusinessLocationController@index')}}"><i class="fa fa-map-marker"></i> @lang('business.business_locations')</a>

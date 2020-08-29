@@ -179,6 +179,9 @@ return [
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         App\Providers\DropboxServiceProvider::class,
 
+        //Comment Andres: he aumentado la debugbar, tambien en los facades
+        Barryvdh\Debugbar\ServiceProvider::class,
+
     ],
 
     /*
@@ -233,7 +236,8 @@ return [
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
-        'Datatables' => Yajra\DataTables\Facades\DataTables::class
+        'Datatables' => Yajra\DataTables\Facades\DataTables::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ]
 ];

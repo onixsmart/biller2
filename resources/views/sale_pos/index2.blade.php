@@ -5,7 +5,7 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header no-print">
-    <h1>Comprobantes Electrónicos 
+    <h1>POS
     </h1>
 </section>
 
@@ -32,8 +32,9 @@
                             <th>@lang('messages.date')</th>
                             <th>@lang('sale.invoice_no')</th>
                             <th>@lang('sale.customer_name')</th>
-                            <th>Doc. Cliente</th>
-                            <th>Estado comprobante</th>
+                            <th>@lang('sale.location')</th>
+                            <th>@lang('lang_v1.shipping_status')</th>
+                            <th>@lang('sale.payment_status')</th>
                             <th>@lang('sale.total_amount')</th>
                             <th>@lang('sale.total_paid')</th>
                             <th>@lang('purchase.payment_due')</th>
@@ -42,7 +43,7 @@
                     </thead>
                     <tfoot>
                         <tr class="bg-gray font-17 footer-total text-center">
-                            <td colspan="4"><strong>@lang('sale.total'):</strong></td>
+                            <td colspan="5"><strong>@lang('sale.total'):</strong></td>
                             <td id="footer_payment_status_count"></td>
                             <td><span class="display_currency" id="footer_sale_total" data-currency_symbol ="true"></span></td>
                             <td><span class="display_currency" id="footer_total_paid" data-currency_symbol ="true"></span></td>
@@ -99,7 +100,7 @@ $(document).ready( function(){
         serverSide: true,
         aaSorting: [[0, 'desc']],
         "ajax": {
-            "url": "/sellsPos",
+            "url": "/sells",
             "data": function ( d ) {
                 if($('#sell_list_filter_date_range').val()) {
                     var start = $('#sell_list_filter_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -112,13 +113,13 @@ $(document).ready( function(){
                 d.location_id = $('#sell_list_filter_location_id').val();
                 d.customer_id = $('#sell_list_filter_customer_id').val();
                 d.payment_status = $('#sell_list_filter_payment_status').val();
-                //d.created_by = $('#created_by').val();
-                //d.sales_cmsn_agnt = $('#sales_cmsn_agnt').val();
-                //d.service_staffs = $('#service_staffs').val();
+                d.created_by = $('#created_by').val();
+                d.sales_cmsn_agnt = $('#sales_cmsn_agnt').val();
+                d.service_staffs = $('#service_staffs').val();
             }
         },
         columnDefs: [ {
-            "targets": 8,
+            "targets": 9,
             "orderable": false,
             "searchable": false
         } ],
@@ -126,8 +127,9 @@ $(document).ready( function(){
             { data: 'transaction_date', name: 'transaction_date'  },
             { data: 'invoice_no', name: 'invoice_no'},
             { data: 'name', name: 'contacts.name'},
-            { data: 'contact_id', name: 'contact_id'},
-            { data: 'estado_sunat', name: 'estado_sunat'},
+            { data: 'business_location', name: 'bl.name'},
+            { data: 'shipping_status', name: 'shipping_status'},
+            { data: 'payment_status', name: 'payment_status'},
             { data: 'final_total', name: 'final_total'},
             { data: 'total_paid', name: 'total_paid', 'searchable' : false},
             { data: 'total_remaining', name: 'total_remaining'},
@@ -136,6 +138,7 @@ $(document).ready( function(){
         "fnDrawCallback": function (oSettings) {
             
             $('#footer_sale_total').text(sum_table_col($('#sell_table'), 'final-total'));
+
             $('#footer_total_paid').text(sum_table_col($('#sell_table'), 'total-paid'));
 
             $('#footer_total_remaining').text(sum_table_col($('#sell_table'), 'payment_due'));
@@ -149,10 +152,9 @@ $(document).ready( function(){
         }
     });
 
-    $(document).on('change', '#sell_list_filter_location_id, #sell_list_filter_customer_id, #sell_list_filter_payment_status',  function() {
+    $(document).on('change', '#sell_list_filter_location_id, #sell_list_filter_customer_id, #sell_list_filter_payment_status, #created_by, #sales_cmsn_agnt, #service_staffs',  function() {
         sell_table.ajax.reload();
     });
-    //console.log(data);
 });
 
 </script>

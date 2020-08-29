@@ -29,8 +29,10 @@ Route::middleware(['IsInstalled', 'bootstrap'])->group(function () {
         ->name('show_invoice');
 });
 
+
 //Routes for authenticated users only
 Route::middleware(['IsInstalled', 'auth', 'SetSessionData', 'language', 'timezone', 'bootstrap'])->group(function () {
+    
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::get('/home', 'HomeController@index')->name('home');
@@ -111,6 +113,13 @@ Route::middleware(['IsInstalled', 'auth', 'SetSessionData', 'language', 'timezon
     Route::get('/sells/draft-dt', 'SellController@getDraftDatables');
     Route::resource('sells', 'SellController');
 
+    //Rutas aumentadas por santiago, verificar funcionamiento
+    Route::get('/sellsPos/duplicate/{id}', 'SellControllerPos@duplicateSell');
+    Route::get('/sellsPos/drafts', 'SellControllerPos@getDrafts');
+    Route::get('/sellsPos/quotations', 'SellControllerPos@getQuotations');
+    Route::get('/sellsPos/draft-dt', 'SellControllerPos@getDraftDatables');
+    Route::resource('sellsPos', 'SellControllerPos'); //ok
+
     Route::get('/sells/pos/get_product_row/{variation_id}/{location_id}', 'SellPosController@getProductRow');
     Route::post('/sells/pos/get_payment_row', 'SellPosController@getPaymentRow');
     Route::post('/sells/pos/get-reward-details', 'SellPosController@getRewardDetails');
@@ -118,6 +127,22 @@ Route::middleware(['IsInstalled', 'auth', 'SetSessionData', 'language', 'timezon
     Route::get('/sells/{transaction_id}/print', 'SellPosController@printInvoice')->name('sell.printInvoice');
     Route::get('/sells/pos/get-product-suggestion', 'SellPosController@getProductSuggestion');
     Route::resource('pos', 'SellPosController');
+
+    // Rutas de facturacion, verificar
+    Route::get('/facturasunat/{transaction_id}/enviar', 'FacturaSunatController@facturaSunat')->name('enviar.facturaSunat'); //ok
+    
+    //verificar rutas
+    Route::get('/facturasunat/baja/{transaction_id}/{motivo}', 'FacturaSunatController@baja_comprobante');
+    Route::get('/facturasunat/envio/{transaction_id}', 'FacturaSunatController@facturaSunat');
+    Route::get('/facturasunat/factura-sunat-enviado/{transaction_id}', 'FacturaSunatController@facturaSunat')->name('facturaSunat');
+    Route::resource('facturasunat', 'FacturaSunatController');
+    // resumen diario
+    Route::get('resumen-pagos', 'ResumenPagosController@getResumen');
+    Route::resource('resumen', 'ResumenPagosController');
+    
+    //sunat... verficar
+    Route::post('sunat.store', 'SunatController@store');
+    Route::resource('sunat', 'SunatController');
 
     Route::resource('roles', 'RoleController');
 

@@ -54,6 +54,6 @@
 "add_payment_row" => "Agregar fila de pago",
 "finalize_payment" => "Finalizar el pago",
 "sale_date" => "Fecha de venta",
-"list_pos" => "Lista POS",
+"list_pos" => "Comprobantes electrónicos", /* Antes era Lista POS */
 "edit_sale" => "Editar Venta",
 ];

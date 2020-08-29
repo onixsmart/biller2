@@ -5,7 +5,7 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header no-print">
-    <h1>Comprobantes Electrónicos 
+    <h1>Comprobantes Electrónicos
     </h1>
 </section>
 
@@ -32,8 +32,8 @@
                             <th>@lang('messages.date')</th>
                             <th>@lang('sale.invoice_no')</th>
                             <th>@lang('sale.customer_name')</th>
-                            <th>Doc. Cliente</th>
-                            <th>Estado comprobante</th>
+                            <th>@lang('sale.location')</th>
+                            <th>@lang('sale.payment_status')</th>
                             <th>@lang('sale.total_amount')</th>
                             <th>@lang('sale.total_paid')</th>
                             <th>@lang('purchase.payment_due')</th>
@@ -82,6 +82,7 @@
 <script type="text/javascript">
 $(document).ready( function(){
     //Date range as a button
+    //Date range as a button
     $('#sell_list_filter_date_range').daterangepicker(
         dateRangeSettings,
         function (start, end) {
@@ -99,7 +100,7 @@ $(document).ready( function(){
         serverSide: true,
         aaSorting: [[0, 'desc']],
         "ajax": {
-            "url": "/sellsPos",
+            "url": "/sells",
             "data": function ( d ) {
                 if($('#sell_list_filter_date_range').val()) {
                     var start = $('#sell_list_filter_date_range').data('daterangepicker').startDate.format('YYYY-MM-DD');
@@ -112,9 +113,6 @@ $(document).ready( function(){
                 d.location_id = $('#sell_list_filter_location_id').val();
                 d.customer_id = $('#sell_list_filter_customer_id').val();
                 d.payment_status = $('#sell_list_filter_payment_status').val();
-                //d.created_by = $('#created_by').val();
-                //d.sales_cmsn_agnt = $('#sales_cmsn_agnt').val();
-                //d.service_staffs = $('#service_staffs').val();
             }
         },
         columnDefs: [ {
@@ -126,8 +124,8 @@ $(document).ready( function(){
             { data: 'transaction_date', name: 'transaction_date'  },
             { data: 'invoice_no', name: 'invoice_no'},
             { data: 'name', name: 'contacts.name'},
-            { data: 'contact_id', name: 'contact_id'},
-            { data: 'estado_sunat', name: 'estado_sunat'},
+            { data: 'business_location', name: 'bl.name'},
+            { data: 'payment_status', name: 'payment_status'},
             { data: 'final_total', name: 'final_total'},
             { data: 'total_paid', name: 'total_paid', 'searchable' : false},
             { data: 'total_remaining', name: 'total_remaining'},
@@ -136,6 +134,7 @@ $(document).ready( function(){
         "fnDrawCallback": function (oSettings) {
             
             $('#footer_sale_total').text(sum_table_col($('#sell_table'), 'final-total'));
+
             $('#footer_total_paid').text(sum_table_col($('#sell_table'), 'total-paid'));
 
             $('#footer_total_remaining').text(sum_table_col($('#sell_table'), 'payment_due'));
@@ -152,7 +151,6 @@ $(document).ready( function(){
     $(document).on('change', '#sell_list_filter_location_id, #sell_list_filter_customer_id, #sell_list_filter_payment_status',  function() {
         sell_table.ajax.reload();
     });
-    //console.log(data);
 });
 
 </script>
