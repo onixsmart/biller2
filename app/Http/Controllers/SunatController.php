@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 use App\EstadoSunat;
+use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use File;
+use Peru\Http\ContextClient;
+use Peru\Sunat\UserValidator;
+
+//require 'vendor/autoload.php';
+
 class SunatController extends Controller
 {
     // public function __construct()
@@ -81,13 +87,12 @@ class SunatController extends Controller
             DB::table('business')
             ->where('id', $business_id_sunat)
             ->update(['doc_empresa' => $sunat_details['ruc']]);
-            \Debugbar::info('business id: '.$business_id_sunat.' RUC: '.$sunat_details['ruc']);
 
             if($request->state_sunat === null){
-                $sunat_details['state_sunat'] = false;
+                $sunat_details['state_sunat'] = 0;
             }
             else if($request->state_sunat != null){
-                $sunat_details['state_sunat'] = true;
+                $sunat_details['state_sunat'] = 1;
             }
             $filename = (string)$sunat_details['ruc'].".pem";
             if($request->hasFile('file')){
@@ -95,20 +100,26 @@ class SunatController extends Controller
                 $disk = Storage::disk('sunat_files')->putFileAs('utilfactura',$request->file , $filename);
                 $sunat_details['certificado_file'] = $disk;
             }
+
+            //validamos los datos
+            $esvalido = $this->validarSOL($sunat_details['ruc'], $sunat_details['user_sol']);
+            
             $sunat_modify->fill($sunat_details);
             $sunat_modify->save();
             
             $output = ['success' => 1,
-                'msg' => __('Datos de Empresa registrados correctamente')
+                'msg' => __($esvalido.': Datos de Empresa registrados correctamente')
             ];
         }
             catch (\Exception $e) {
                 \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
                 
+
                 $output = ['success' => 0,
-                                'msg' => __('messages.something_went_wrong')
+                                'msg' => 'Error: '.$e->getMessage()
                             ];
             }
+            
             $business_sunat =  $sunat_details;
             
             //  return view('sunat.indexfile', compact(
@@ -124,6 +135,22 @@ class SunatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function validarSOL($ruc, $user)
+    {
+        //$ruc = '20123456789'; // colocar un ruc válido
+        //$user = 'TGGMMSYY'; // colocar un usuario según el ruc
+
+        $cs = new UserValidator(new ContextClient());
+        $valid = $cs->valid($ruc,$user);
+        if ($valid) {
+            return 'Válido';
+        } else {
+            throw new \Exception("Sunat no reconoce los datos");
+            return 'Inválido';
+            
+        }
+    }
+
     public function show($id)
     {
         //

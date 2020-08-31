@@ -12,7 +12,7 @@
             <div class="box-tools">
                 <button type="button" class="btn btn-block btn-primary btn-modal" 
                 data-href="{{action('ResumenPagosController@create')}}" data-container=".resumen_modal">
-                <i class="fa fa-plus"></i> @lang('messages.add')</button>
+                <i class="fa fa-plus"></i> Crear resumen</button>
             </div>
         @endslot
          <div class="container">

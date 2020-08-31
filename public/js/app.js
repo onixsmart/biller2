@@ -475,6 +475,50 @@ $(document).ready(function () {
         });
     });
 
+    //valida documento de contacto en sunat o JNE
+
+    $(document).on('click', '#validardoc', function (e, response) {
+        e.preventDefault();
+        var nrodocumento = $('#contact_id').val();
+        $.ajax({
+            method: 'GET',
+            url: '/contacts/validar',
+            dataType: 'json',
+            data: { doc: nrodocumento },
+            success: function (result) {
+                if (result.success == false) {
+                    toastr.error(result.msg);
+                } else {
+                    console.log('llego: ' + result.nombres);
+                    if (nrodocumento.length == 8) {
+                        $('#name').val(
+                            result.nombres +
+                                ' ' +
+                                result.apellidoPaterno +
+                                ' ' +
+                                result.apellidoMaterno
+                        );
+                    } else if (nrodocumento.length == 11) {
+                        if ($('#mobile').val() == '' && result.telefonos[0] == null) {
+                            result.telefonos[0] = '000000000';
+                        } else {
+                            result.telefonos[0] = $('#mobile').val();
+                        }
+                        $('#name').val(result.razonSocial);
+                        $('#supplier_business_name').val(result.nombreComercial);
+                        $('#mobile').val(result.telefonos[0]);
+                        $('#alternate_number').val(result.telefonos[1]);
+                        $('#landmark').val(result.direccion);
+                        $('#country').val('PERU');
+                        $('#city').val(result.departamento);
+                        $('#state').val(result.distrito);
+                        $('#landline').val(result.estado);
+                    }
+                }
+            },
+        });
+    });
+
     $(document).on('click', '.delete_contact_button', function (e) {
         e.preventDefault();
         swal({

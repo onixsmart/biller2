@@ -49,27 +49,24 @@
         </div>
         <div class="col-md-4">
           <div class="form-group">
-              {!! Form::label('contact_id', __('lang_v1.contact_id') . ':') !!}
+              {!! Form::label('contact_id', __('lang_v1.contact_id') . ':*') !!}
               <div class="input-group">
                   <span class="input-group-addon">
                       <i class="fa fa-id-badge"></i>
                   </span>
                   <input type="hidden" id="hidden_id" value="{{$contact->id}}">
-                  {!! Form::text('contact_id', $contact->contact_id, ['class' => 'form-control','placeholder' => __('lang_v1.contact_id')]); !!}
+                  {!! Form::text('contact_id', $contact->contact_id, ['class' => 'form-control','required','placeholder' => __('lang_v1.contact_id')]); !!}
               </div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="form-group">
-              {!! Form::label('tax_number', __('contact.tax_no') . ':') !!}
-              <div class="input-group">
-                  <span class="input-group-addon">
-                      <i class="fa fa-info"></i>
-                  </span>
-                  {!! Form::text('tax_number', $contact->tax_number, ['class' => 'form-control', 'placeholder' => __('contact.tax_no')]); !!}
-              </div>
+          <div class="form-group "><br/>
+              <button type="button" class="btn btn-labeled btn-info" id="validardoc">
+                  <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>&nbsp; &nbsp;Validar documento</button>
+              
           </div>
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-4">
           <div class="form-group">
               {!! Form::label('opening_balance', __('lang_v1.opening_balance') . ':') !!}
@@ -155,17 +152,27 @@
       </div>
       <div class="col-md-3">
         <div class="form-group">
-            {!! Form::label('landline', __('contact.landline') . ':') !!}
+            {!! Form::label('landline', __('Estado SUNAT') . ':') !!}
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-phone"></i>
+                    <i class="fa fa-heart"></i>
                 </span>
-                {!! Form::text('landline', $contact->landline, ['class' => 'form-control', 'placeholder' => __('contact.landline')]); !!}
+                {!! Form::text('landline', $contact->landline, ['class' => 'form-control', 'placeholder' => __('Estado SUNAT')]); !!}
             </div>
         </div>
       </div>
       <div class="clearfix"></div>
-
+      <div class="col-md-6">
+        <div class="form-group">
+            {!! Form::label('landmark', __('business.landmark') . ':') !!}
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-map-marker"></i>
+                </span>
+                {!! Form::text('landmark', $contact->landmark, ['class' => 'form-control', 'placeholder' => __('business.landmark')]); !!}
+            </div>
+        </div>
+      </div>
       <div class="col-md-3">
         <div class="form-group">
             {!! Form::label('city', __('business.city') . ':') !!}
@@ -188,7 +195,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div style="display: none">
         <div class="form-group">
             {!! Form::label('country', __('business.country') . ':') !!}
             <div class="input-group">
@@ -199,17 +206,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="form-group">
-            {!! Form::label('landmark', __('business.landmark') . ':') !!}
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-map-marker"></i>
-                </span>
-                {!! Form::text('landmark', $contact->landmark, ['class' => 'form-control', 'placeholder' => __('business.landmark')]); !!}
-            </div>
-        </div>
-      </div>
+      
       <div class="clearfix"></div>
       <div class="col-md-12">
         <hr/>

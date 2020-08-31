@@ -44,22 +44,32 @@ class ResumenPagosController extends Controller
         // $resumenes =  ResumenesDiarios::all();
         // $resumenes =  ResumenesDiarios::where('business_id', $business_id)->get();
         $resumenes = \DB::table("resumen_diario")
-                ->select("*",
-                    \DB::raw('(CASE 
-
-                        WHEN resumen_diario.estado_sunat = "0" THEN "'.__("lang_v1.0").'"
-                        WHEN resumen_diario.estado_sunat = "1" THEN "'.__("lang_v1.1").'"
-                        WHEN resumen_diario.estado_sunat = "2" THEN "'.__("lang_v1.2").'"
-                        WHEN resumen_diario.estado_sunat = "3" THEN "'.__("lang_v1.3").'"
-                        WHEN resumen_diario.estado_sunat = "4" THEN "'.__("lang_v1.4").'"
-
-                        ELSE "Desconocido" 
-
-                        END) AS estado_sunat'))
                 ->where('business_id', $business_id)
                 ->get();
         // $resumenes = DB::table('resumen_diario')->select('*');
         return Datatables::of($resumenes)
+         ->editColumn('estado_sunat',function($row){
+                        if($row->estado_sunat === 0){
+                            $html1 =  '<span class="label" style="background-color: #dc3545;"> '. __("Anulado") .' </span>';
+                        }
+                        else if($row->estado_sunat === 1){
+                            $html1 =  '<span class="label" style="background-color: #ffc107;" > '. __("En proceso") .'</span>';
+                        }
+                        else if($row->estado_sunat === 2){
+                            $html1 =  '<span class="label" style="background-color: #6c757d;" > '. __("Rechazado") .'</span>';
+                        }
+                        else if($row->estado_sunat === 3){
+                            $html1 =  '<span class="label" style="background-color: #17a2b8;" > '. __("Con observaciones") .'</span>';
+                        }
+                        else if($row->estado_sunat === 4){
+                            $html1 = '<span class="label" style="background-color: #28a745">Aceptado</span>';
+                        }
+                        else {
+                            $html1 =  '<span class="label">Error</span>';
+                        }
+                        return $html1;
+                    })
+            
             ->addColumn('action', function ($row) {
                 $html = '<div class="btn-group">
                             <button type="button" class="btn btn-info dropdown-toggle btn-xs" 
@@ -73,6 +83,7 @@ class ResumenPagosController extends Controller
                 $html .= '</ul></div>';
                 return $html;
             })
+            ->rawColumns(['estado_sunat', 'action'])
             ->make(true);
         
     }

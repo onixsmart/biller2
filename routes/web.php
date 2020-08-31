@@ -64,6 +64,8 @@ Route::middleware(['IsInstalled', 'auth', 'SetSessionData', 'language', 'timezon
     Route::post('/contacts/import', 'ContactController@postImportContacts');
     Route::post('/contacts/check-contact-id', 'ContactController@checkContactId');
     Route::get('/contacts/customers', 'ContactController@getCustomers');
+    //Validar en SUNAT/JNE el numero de documento ingresado
+    Route::get('/contacts/validar', 'ContactController@validarDOC');
     Route::resource('contacts', 'ContactController');
 
     Route::resource('categories', 'CategoryController');

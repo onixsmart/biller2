@@ -29,7 +29,7 @@
       </div>
       <div class="col-md-6">
         <div class="form-group">
-            {!! Form::label('name', __('contact.name') . ':*') !!}
+            {!! Form::label('name', __('contact.name') . '/Raz. Social:*') !!}
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="fa fa-user"></i>
@@ -41,27 +41,35 @@
       <div class="clearfix"></div>
       <div class="col-md-4 supplier_fields">
         <div class="form-group">
-            {!! Form::label('supplier_business_name', __('business.business_name') . ':*') !!}
+            {!! Form::label('supplier_business_name', __('Nombre Comercial') . ':*') !!}
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="fa fa-briefcase"></i>
                 </span>
-                {!! Form::text('supplier_business_name', null, ['class' => 'form-control', 'required', 'placeholder' => __('business.business_name')]); !!}
+                {!! Form::text('supplier_business_name', null, ['class' => 'form-control', 'required', 'placeholder' => __('Nombre Comercial')]); !!}
             </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-            {!! Form::label('contact_id', __('lang_v1.contact_id') . ':') !!}
+            {!! Form::label('contact_id', __('lang_v1.contact_id') . ':*') !!}
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="fa fa-id-badge"></i>
                 </span>
-                {!! Form::text('contact_id', null, ['class' => 'form-control','placeholder' => __('lang_v1.contact_id')]); !!}
+                {!! Form::text('contact_id', null, ['class' => 'form-control','required','placeholder' => __('lang_v1.contact_id')]); !!}
             </div>
         </div>
       </div>
-        <div class="col-md-4">
+      <div class="col-md-4">
+        <div class="form-group "><br/>
+            <button type="button" class="btn btn-labeled btn-info" id="validardoc">
+                <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>&nbsp; &nbsp;Validar documento</button>
+            
+        </div>
+      </div>
+      <div class="clearfix"></div>
+        <!--<div class="col-md-4">
           <div class="form-group">
               {!! Form::label('tax_number', __('contact.tax_no') . ':') !!}
               <div class="input-group">
@@ -71,8 +79,8 @@
                   {!! Form::text('tax_number', null, ['class' => 'form-control', 'placeholder' => __('contact.tax_no')]); !!}
               </div>
           </div>
-        </div>
-        <div class="clearfix"></div>
+        </div>-->
+        
 
         <div class="col-md-4">
           <div class="form-group">
@@ -137,38 +145,50 @@
       </div>
       <div class="col-md-3">
         <div class="form-group">
-            {!! Form::label('mobile', __('contact.mobile') . ':*') !!}
+            {!! Form::label('mobile', __('Teléfono principal') . ':*') !!}
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="fa fa-mobile"></i>
                 </span>
-                {!! Form::text('mobile', null, ['class' => 'form-control', 'required', 'placeholder' => __('contact.mobile')]); !!}
+                {!! Form::text('mobile', null, ['class' => 'form-control', 'required', 'placeholder' => __('Teléfono principal')]); !!}
             </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
-            {!! Form::label('alternate_number', __('contact.alternate_contact_number') . ':') !!}
+            {!! Form::label('alternate_number', __('Teléfono alternativo') . ':') !!}
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="fa fa-phone"></i>
                 </span>
-                {!! Form::text('alternate_number', null, ['class' => 'form-control', 'placeholder' => __('contact.alternate_contact_number')]); !!}
+                {!! Form::text('alternate_number', null, ['class' => 'form-control', 'placeholder' => __('Teléfono alternativo')]); !!}
             </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
-            {!! Form::label('landline', __('contact.landline') . ':') !!}
+            {!! Form::label('landline', __('Estado SUNAT') . ':') !!}
             <div class="input-group">
                 <span class="input-group-addon">
-                    <i class="fa fa-phone"></i>
+                    <i class="fa fa-heart"></i>
                 </span>
-                {!! Form::text('landline', null, ['class' => 'form-control', 'placeholder' => __('contact.landline')]); !!}
+                {!! Form::text('landline', null, ['class' => 'form-control', 'placeholder' => __('Estado SUNAT')]); !!}
             </div>
         </div>
       </div>
       <div class="clearfix"></div>
+      <div class="col-md-6">
+        <div class="form-group">
+            {!! Form::label('landmark', __('Dirección') . ':') !!}
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-map-marker"></i>
+                </span>
+                {!! Form::text('landmark', null, ['class' => 'form-control', 
+                'placeholder' => __('Dirección')]); !!}
+            </div>
+        </div>
+      </div>
       <div class="col-md-3">
         <div class="form-group">
             {!! Form::label('city', __('business.city') . ':') !!}
@@ -191,7 +211,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="" style="display: none">
         <div class="form-group">
             {!! Form::label('country', __('business.country') . ':') !!}
             <div class="input-group">
@@ -202,18 +222,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="form-group">
-            {!! Form::label('landmark', __('business.landmark') . ':') !!}
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="fa fa-map-marker"></i>
-                </span>
-                {!! Form::text('landmark', null, ['class' => 'form-control', 
-                'placeholder' => __('business.landmark')]); !!}
-            </div>
-        </div>
-      </div>
+      
       <div> 
       <div class="clearfix"></div>
       <div class="col-md-12">

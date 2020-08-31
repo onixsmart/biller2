@@ -34,6 +34,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 use App\UtilFactura;
 //use DB;
+use Greenter\See;
 use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Sale\SaleDetail;
 use Greenter\Model\Sale\Legend;
@@ -120,13 +121,14 @@ class FacturaSunatController extends Controller
       {
          //consultamos los datos de la venta
          $datos = DB::table('transactions')->where('id', $transaction_id)->where('invoice_no','like','F%')->first();
-         \Debugbar::info($datos);
+         $business_id = request()->session()->get('user.business_id');
          //consultamos los datos de la empresa y cliente
          $empresa_id= $datos->business_id;
          $empresa = DB::table('business')->where('id', $empresa_id)->first();
          $ubicacion_empresa = DB::table('business_locations')->where('business_id', $datos->location_id)->first();
          $cliente = DB::table('contacts')->where('id', $datos->contact_id)->first();
-        \Debugbar::info($empresa);
+         $sunat = DB::table('estado_sunat')->where('business_id', $business_id)->first();
+        \Debugbar::info($sunat);
          $util = UtilFactura::getInstance();
 
          $company = new Company();
@@ -224,12 +226,27 @@ class FacturaSunatController extends Controller
                   ->setValue($sonletras)
             ]);
 
+         //Difinir datos SUNAT
+         $datossunat = new See();
+         //$see->setService($endpoint);
+         $datossunat->setCertificate(file_get_contents(__DIR__.'/../../../resources/'.$sunat->certificado_file));
+         $datossunat->setCredentials($sunat->ruc.$sunat->user_sol, $sunat->pass_sol);
+         $datossunat->setCachePath(__DIR__ . '/../../../cache');
+
          // Envio a SUNAT.
-         $see = $util->getSee(SunatEndpoints::FE_BETA);
+         if($sunat->state_sunat == 0){
+            $datossunat->setService(SunatEndpoints::FE_BETA);
+            //$see = $util->getSee(SunatEndpoints::FE_BETA);
+            $beta=' (modo prueba)';}
+         else{
+            $datossunat->setService(SunatEndpoints::FE_PRODUCCION);
+            //$see = $util->getSee(SunatEndpoints::FE_PRODUCCION);
+            $beta='';
+         }
 
          /** Si solo desea enviar un XML ya generado utilice esta función**/
-         $res = $see->send($invoice);
-         $util->writeXml($invoice, $see->getFactory()->getLastXml());
+         $res = $datossunat->send($invoice);
+         $util->writeXml($invoice, $datossunat->getFactory()->getLastXml());
 
          if ($res->isSuccess()) {
             
@@ -241,7 +258,7 @@ class FacturaSunatController extends Controller
             $this->cambiar_estado_venta($transaction_id,'4');
 
             $output = ['success' => 1,
-            'msg' => $mensaje];
+            'msg' => $mensaje.$beta];
             //echo $mensaje;
          } else {
             $mensaje= $res->getError()->getMessage();

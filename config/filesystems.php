@@ -47,6 +47,10 @@ return [
             'driver' => 'local',
             'root' => public_path('uploads'),
         ],
+        'sunat_files' => [
+            'driver' => 'local',
+            'root' => public_path('/../resources/'),
+        ],
 
         'public' => [
             'driver' => 'local',

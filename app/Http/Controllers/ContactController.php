@@ -16,6 +16,10 @@ use Excel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
+use Peru\Http\ContextClient;
+use Peru\Jne\{Dni, DniParser};
+use Peru\Sunat\{HtmlParser, Ruc, RucParser};
+
 class ContactController extends Controller
 {
     protected $commonUtil;
@@ -638,6 +642,49 @@ class ContactController extends Controller
         }
         echo $valid;
         exit;
+    }
+
+    //Andres: Funcion para validar RUC/DNI
+    public function validarDOC()
+    {
+        if (request()->ajax()) {
+            $documento = $_GET['doc'];;
+            try {
+                if(strlen($documento)==8){
+                //$dni = '46658592';
+                    $cs = new Dni(new ContextClient(), new DniParser());
+
+                    $person = $cs->get($documento);
+                    if (!$person) {
+                        throw new \Exception("no existe");
+                        //exit();
+                    }
+                    $respuesta = $person;
+
+                }elseif(strlen($documento)==11){
+                    //$ruc = '20100070970';
+                    $cs = new Ruc(new ContextClient(), new RucParser(new HtmlParser()));
+
+                    $company = $cs->get($documento);
+                    if (!$company) {
+                        throw new \Exception("no existe");
+                        //exit();
+                    }
+                    $respuesta = $company;
+                }else{
+                    throw new \Exception("es inválido");
+                }
+                
+            } catch (\Exception $e) {
+                $respuesta = ['success' => false,
+                            'msg' => __("El número de documento que buscas ".$e->getMessage())
+                        ];
+                
+            }
+            \Debugbar::info($respuesta);
+            return $respuesta;
+        
+        }
     }
 
     /**

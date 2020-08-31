@@ -36,7 +36,7 @@
                             <th>@lang('lang_v1.contact_id')</th>
                             @if($type == 'supplier') 
                                 <th>@lang('business.business_name')</th>
-                                <th>@lang('contact.name')</th>
+                                <th>@lang('contact.name') / Raz. Social</th>
                                 <th>@lang('lang_v1.added_on')</th>
                                 <th>@lang('contact.mobile')</th>
                                 <th>@lang('contact.total_purchase_due')</th>

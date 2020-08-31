@@ -1,7 +1,7 @@
 <?php
  return [
 "register_and_get_started_in_minutes" => "Registrate y comienza en segundos",
-"business_name" => "Nombre de la empresa", /* modified */
+"business_name" => "Nombre comercial", /* modified */
 "start_date" => "Fecha de inicio",
 "currency" => "Moneda",
 "currency_placeholder" => "Seleccione el tipo de moneda",
@@ -11,7 +11,7 @@
 "city" => "Ciudad",
 "zip_code" => "Código postal",
 "zip_code_placeholder" => "Código Postal / Zip",
-"landmark" => "Punto de referencia",
+"landmark" => "Dirección",
 "tax_1_name" => "Impuesto 1 Nombre", /* modified */
 "tax_1_no" => "Impuesto 1 No",
 "tax_2_name" => "Impuesto 2 Nombre", /* modified */
@@ -67,7 +67,7 @@
 "system" => "Sistema",
 "show_help_text" => "Mostrar texto de ayuda",
 "mobile" => "Móvil",
-"alternate_number" => "Número de contacto alternativo",
+"alternate_number" => "Teléfono alternativo",
 "email" => "Email",
 "settings" => "Configuraciones",
 "transaction_edit_days" => "Días de edición de transacción",

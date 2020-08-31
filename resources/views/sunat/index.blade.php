@@ -48,7 +48,8 @@
                             <span class="input-group-addon">
                                 <i class="fa fa-info"></i>
                             </span>
-                            {!! Form::text('pass_sol', $business_sunat->pass_sol, ['class' => 'form-control','placeholder' => 'Password SOL']); !!}
+                            {!! Form::input('password','pass_sol', $business_sunat->pass_sol, ['class' => 'form-control','placeholder' => 'Contraseña sol']); !!}
+                           
                         </div>
                     </div>
                 </div>
@@ -56,11 +57,16 @@
                 
                 <div class="col-sm-4">
                     <div class="form-group">
-                            {{ Form::label("Cargar certificado: ", null) }}
+                            {{ Form::label("Cargar certificado: (Solo formato *.pem)", null) }}
                         <span class="input-group-addon">
                             <i class="fa fa-file-invoice"></i>
                         </span>
                           {{ Form::file('file') }}
+                        @if(!empty($business_sunat->certificado_file))
+                            <br><span class="label" style="background-color: #17a2b8;" >Ya tiene un certificado cargado</span>
+                        @else
+                            <br><span class="label" style="background-color: #6c757d;" >Aun no tiene un certificado cargado</span>
+                        @endif
                          
                     </div>
                 </div>
@@ -69,7 +75,7 @@
                         <div class="checkbox">
                         <br>
                         <label>
-                        {{ Form::checkbox('state_sunat', $business_sunat->state_sunat, $business_sunat->state_sunat, array('disabled')) }}{{ __( 'Utilizar certificado de Biller') }}
+                        {{ Form::checkbox('state_sunat', $business_sunat->state_sunat, $business_sunat->state_sunat) }}{{ __( 'Modo Producción') }}
                         </label>
                         </div>
                     </div>
