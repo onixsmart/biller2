@@ -229,16 +229,22 @@ class FacturaSunatController extends Controller
          //Difinir datos SUNAT
          $datossunat = new See();
          //$see->setService($endpoint);
-         $datossunat->setCertificate(file_get_contents(__DIR__.'/../../../resources/'.$sunat->certificado_file));
+         
          $datossunat->setCredentials($sunat->ruc.$sunat->user_sol, $sunat->pass_sol);
          $datossunat->setCachePath(__DIR__ . '/../../../cache');
 
          // Envio a SUNAT.
          if($sunat->state_sunat == 0){
+            if($sunat->certificado_file==null){
+            $datossunat->setCertificate(file_get_contents(__DIR__.'/../../../resources/utilfactura/cert.pem'));
+            }else{
+               $datossunat->setCertificate(file_get_contents(__DIR__.'/../../../resources/'.$sunat->certificado_file));
+            }
             $datossunat->setService(SunatEndpoints::FE_BETA);
             //$see = $util->getSee(SunatEndpoints::FE_BETA);
             $beta=' (modo prueba)';}
          else{
+            $datossunat->setCertificate(file_get_contents(__DIR__.'/../../../resources/'.$sunat->certificado_file));
             $datossunat->setService(SunatEndpoints::FE_PRODUCCION);
             //$see = $util->getSee(SunatEndpoints::FE_PRODUCCION);
             $beta='';
