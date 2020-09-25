@@ -14,8 +14,11 @@
 include_once('install_r.php');
 
 Route::middleware(['IsInstalled', 'bootstrap'])->group(function () {
+    //Route::get('/', function () {
+    //    return view('welcome');
+    //});
     Route::get('/', function () {
-        return view('welcome');
+        return redirect('/login');
     });
 
     Auth::routes();
