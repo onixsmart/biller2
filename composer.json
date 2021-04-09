@@ -13,7 +13,7 @@
         "composer/semver": "^1.4",
         "consoletvs/charts": "^5.4",
         "fideloper/proxy": "^4.0",
-        "giansalex/peru-consult": "^4.1",
+        "giansalex/peru-consult": "^4.2",
         "greenter/data": "^4.0",
         "greenter/lite": "^4.0",
         "knox/pesapal": "^1.3",

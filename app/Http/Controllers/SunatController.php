@@ -137,15 +137,18 @@ class SunatController extends Controller
      */
     public function validarSOL($ruc, $user)
     {
-        //$ruc = '20123456789'; // colocar un ruc válido
-        //$user = 'TGGMMSYY'; // colocar un usuario según el ruc
+        //$ruc = '20555117729'; // colocar un ruc válido
+        //$user = 'FEADMIN1'; // colocar un usuario según el ruc
+
+        //\Debugbar::info($ruc);
+        //\Debugbar::info($user);
 
         $cs = new UserValidator(new ContextClient());
         $valid = $cs->valid($ruc,$user);
         if ($valid) {
             return 'Válido';
         } else {
-            throw new \Exception("Sunat no reconoce los datos");
+            throw new \Exception("Sunat no reconoce los datos ". $user);
             return 'Inválido';
             
         }

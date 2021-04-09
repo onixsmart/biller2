@@ -16,9 +16,9 @@ use Excel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-use Peru\Http\ContextClient;
-use Peru\Jne\{Dni, DniParser};
-use Peru\Sunat\{HtmlParser, Ruc, RucParser};
+//use Peru\Http\ContextClient;
+use Peru\Jne\DniFactory;
+use Peru\Sunat\RucFactory;
 
 class ContactController extends Controller
 {
@@ -652,24 +652,30 @@ class ContactController extends Controller
             try {
                 if(strlen($documento)==8){
                 //$dni = '46658592';
-                    $cs = new Dni(new ContextClient(), new DniParser());
+
+                    $factory = new DniFactory();
+                    $cs = $factory->create();
 
                     $person = $cs->get($documento);
                     if (!$person) {
                         throw new \Exception("no existe");
-                        //exit();
+                        //return;
                     }
                     $respuesta = $person;
 
                 }elseif(strlen($documento)==11){
                     //$ruc = '20100070970';
-                    $cs = new Ruc(new ContextClient(), new RucParser(new HtmlParser()));
+                    //$ruc = '20100070970';
+
+                    $factory = new RucFactory();
+                    $cs = $factory->create();
 
                     $company = $cs->get($documento);
                     if (!$company) {
                         throw new \Exception("no existe");
-                        //exit();
+                        //return;
                     }
+
                     $respuesta = $company;
                 }else{
                     throw new \Exception("es inválido");
