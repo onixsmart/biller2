@@ -237,7 +237,7 @@ $(document).ready(function () {
                 selling_price = item.variation_group_price;
             }
 
-            string += ' (' + item.sub_sku + ')' + '<br> Price: ' + selling_price;
+            string += ' (' + item.brand + ')' + '<br> Price: ' + selling_price;
             if (item.enable_stock == 1) {
                 var qty_available = __currency_trans_from_en(
                     item.qty_available,

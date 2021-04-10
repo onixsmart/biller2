@@ -1018,6 +1018,8 @@ class ProductController extends Controller
                 ->active()
                 ->whereNull('variations.deleted_at')
                 ->leftjoin('units as U', 'products.unit_id', '=', 'U.id')
+                //Andres: He agregado el nombre de la marca a la busqueda de productos
+                ->leftjoin('brands as B', 'products.brand_id', '=', 'B.id')
                 ->leftjoin(
                     'variation_location_details AS VLD',
                     function ($join) use ($location_id) {
@@ -1090,7 +1092,8 @@ class ProductController extends Controller
                 'VLD.qty_available',
                 'variations.sell_price_inc_tax as selling_price',
                 'variations.sub_sku',
-                'U.short_name as unit'
+                'U.short_name as unit',
+                'B.name as brand'
             );
             if (!empty($price_group_id)) {
                 $products->addSelect('VGP.price_inc_tax as variation_group_price');
