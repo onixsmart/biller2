@@ -269,12 +269,11 @@ $(document).ready(function () {
 
         var unit_price_inc_tax = __read_number(tr.find('input.pos_unit_price_inc_tax'));
         var line_total = entered_qty * unit_price_inc_tax;
+        var subtotal_item = (line_total * 1.18).toFixed(1);
 
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
         tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
-        tr.find('span.pos_line_importe_text').text(
-            __currency_trans_from_en(line_total * 1.18, true)
-        );
+        tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(subtotal_item, true));
 
         pos_total_row();
 
@@ -294,13 +293,12 @@ $(document).ready(function () {
         var unit_price_inc_tax = __add_percent(discounted_unit_price, tax_rate);
 
         var line_total = quantity * unit_price_inc_tax;
+        var subtotal_item = (line_total * 1.18).toFixed(1);
 
         __write_number(tr.find('input.pos_unit_price_inc_tax'), unit_price_inc_tax);
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
         tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
-        tr.find('span.pos_line_importe_text').text(
-            __currency_trans_from_en(line_total * 1.18, true)
-        );
+        tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(subtotal_item, true));
         pos_each_row(tr);
         pos_total_row();
         round_row_to_iraqi_dinnar(tr);
@@ -336,13 +334,12 @@ $(document).ready(function () {
         var line_total = quantity * unit_price_inc_tax;
         var discounted_unit_price = __get_principle(unit_price_inc_tax, tax_rate);
         var unit_price = get_unit_price_from_discounted_unit_price(tr, discounted_unit_price);
+        var subtotal_item = (line_total * 1.18).toFixed(1);
 
         __write_number(tr.find('input.pos_unit_price'), unit_price);
         __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
         tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
-        tr.find('span.pos_line_importe_text').text(
-            __currency_trans_from_en(line_total * 1.18, true)
-        );
+        tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(subtotal_item, true));
 
         pos_each_row(tr);
         pos_total_row();
@@ -426,11 +423,13 @@ $(document).ready(function () {
 
             var line_total = quantity * unit_price_inc_tax;
 
+            var subtotal_item = (line_total * 1.18).toFixed(1);
+
             __write_number(tr.find('input.pos_unit_price_inc_tax'), unit_price_inc_tax);
             __write_number(tr.find('input.pos_line_total'), line_total, false, 2);
             tr.find('span.pos_line_total_text').text(__currency_trans_from_en(line_total, true));
             tr.find('span.pos_line_importe_text').text(
-                __currency_trans_from_en(line_total * 1.18, true)
+                __currency_trans_from_en(subtotal_item, true)
             );
             pos_each_row(tr);
             pos_total_row();
@@ -1298,8 +1297,10 @@ function pos_product_row(variation_id, purchase_line_id = null) {
 
                     //For initial discount if present
                     var line_total = __read_number(this_row.find('input.pos_line_total'));
+                    var subtotal_item = (line_total * 1.18).toFixed(1);
+
                     this_row.find('span.pos_line_total_text').text(line_total);
-                    this_row.find('span.pos_line_importe_text').text(line_total * 1.18, true);
+                    this_row.find('span.pos_line_importe_text').text(subtotal_item, true);
 
                     pos_total_row();
 
@@ -1409,7 +1410,8 @@ function calculate_billing_details(price_total) {
     //Add shipping charges.
     var shipping_charges = __read_number($('input#shipping_charges'));
 
-    var total_payable = price_total + order_tax - discount + shipping_charges;
+    //Andres: He aumentado el toFixed para redondear decimales
+    var total_payable = (price_total + order_tax - discount + shipping_charges).toFixed(1);
 
     __write_number($('input#final_total_input'), total_payable);
     var curr_exchange_rate = 1;
@@ -1698,6 +1700,7 @@ $('table#pos_table tbody').on('change', 'input.pos_line_total', function () {
     var quantity_element = tr.find('input.pos_quantity');
     var unit_price_inc_tax = __read_number(tr.find('input.pos_unit_price_inc_tax'));
     var quantity = subtotal / unit_price_inc_tax;
+    var subtotal_item = (subtotal * 1.18).toFixed(1);
     __write_number(quantity_element, quantity);
 
     if (sell_form_validator) {
@@ -1707,7 +1710,7 @@ $('table#pos_table tbody').on('change', 'input.pos_line_total', function () {
         pos_form_validator.element(quantity_element);
     }
     tr.find('span.pos_line_total_text').text(__currency_trans_from_en(subtotal, true));
-    tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(subtotal * 1.18, true));
+    tr.find('span.pos_line_importe_text').text(__currency_trans_from_en(subtotal_item, true));
 
     pos_total_row();
 });
