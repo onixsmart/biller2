@@ -194,7 +194,7 @@
 
 <div class="row">
 	<div class="col-xs-12">
-		AQUI ESTABAN LOS 2 BR
+		<br/><br/>
 		<table class="table table-responsive">
 			<thead>
 				<tr>
@@ -247,9 +247,9 @@
 </div>
 
 <div class="row">
-	
+	<br/>
 	<div class="col-md-12"><hr/></div>
-
+	<br/>
 
 
 	<div class="col-xs-6">
@@ -261,7 +261,7 @@
 					<tr>
 						<td>{{$payment['method']}}</td>
 						<td>{{$payment['amount']}}</td>
-						<!--<td>{{$payment['date']}}</td>-->
+						<td>{{$payment['date']}}</td>
 					</tr>
 				@endforeach
 			@endif

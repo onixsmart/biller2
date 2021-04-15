@@ -622,7 +622,7 @@ class SellPosController extends Controller
                     // 20601221251(Ruc del cliente)|"; //Texto
                     // $solesfl = substr($receipt_details->total, 3, 0);
                     // $solesfl = (float)(ltrim($receipt_details->total, 'S/.'));
-                    \Debugbar::info($receipt_details->total);
+                    //\Debugbar::info($receipt_details->total);
                     $solesfl = substr($receipt_details->total, 3);
                     $solesfl = str_replace(',','',$solesfl);
                     // $fl = floatval("40.20");
