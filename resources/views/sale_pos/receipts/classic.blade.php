@@ -194,7 +194,7 @@
 
 <div class="row">
 	<div class="col-xs-12">
-		AQUI ESTABAN LOS 2 BR
+		
 		<table class="table table-responsive">
 			<thead>
 				<tr>
