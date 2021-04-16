@@ -627,9 +627,13 @@ class SellPosController extends Controller
                     $solesfl = str_replace(',','',$solesfl);
                     //\Debugbar::info("total final: ".$solesfl);
                     // $fl = floatval("40.20");
-                    $fl = number_format($solesfl, 2); 
-                    // $fl = floatval("40.20");
-                    $solesLetra = "SON ".strtoupper($this->num2letras($fl));
+                    $fl = number_format($solesfl, 2);
+                    if($fl>999){
+                        $solesLetra = "";
+                    }else{
+                        $solesLetra = "SON ".strtoupper($this->num2letras($fl));
+                    }
+                    
                     // $solesLetra = $receipt_details->tax_info1;
                     // print_r($receipt_details);
                     $titulo = $this->getTituloInvoice($this->getPrefijo($receipt_details->invoice_no));
@@ -1324,6 +1328,7 @@ class SellPosController extends Controller
                                 'discount_amount' => $input['discount_amount']
                             ];
                 $invoice_total = $this->productUtil->calculateInvoiceTotal($input['products'], $input['tax_rate_id'], $discount);
+                //\Debugbar::info($invoice_total);
 
                 if (!empty($request->input('transaction_date'))) {
                     $input['transaction_date'] = $this->productUtil->uf_date($request->input('transaction_date'), true);
@@ -1374,7 +1379,9 @@ class SellPosController extends Controller
                     if (!empty($input['change_return_id'])) {
                         $change_return['id'] = $input['change_return_id'];
                     }
+                    
                     $input['payment'][] = $change_return;
+                    //\Debugbar::info($input['payment']);
 
                     $this->transactionUtil->createOrUpdatePaymentLines($transaction, $input['payment']);
 
@@ -1471,7 +1478,7 @@ class SellPosController extends Controller
             DB::rollBack();
             \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
             $output = ['success' => 0,
-                            'msg' => __('messages.something_went_wrong')
+                            'msg' => __('Algo salió mal con la actualización')
                         ];
         }
 
@@ -1577,7 +1584,7 @@ class SellPosController extends Controller
                 \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
 
                 $output['success'] = false;
-                $output['msg'] = trans("messages.something_went_wrong");
+                $output['msg'] = trans("messages.something_went_wrong"."(al eliminar)");
             }
 
             return $output;
@@ -1783,7 +1790,7 @@ class SellPosController extends Controller
         if (request()->ajax()) {
             try {
                 $output = ['success' => 0,
-                        'msg' => trans("messages.something_went_wrong")
+                        'msg' => trans("Algo salió mal en la impresión del comprobante")
                         ];
 
                 $business_id = $request->session()->get('user.business_id');
@@ -1813,7 +1820,7 @@ class SellPosController extends Controller
                 \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
                 
                 $output = ['success' => 0,
-                        'msg' => trans("messages.something_went_wrong")
+                        'msg' => trans("Algo salió mal en la impresión del comprobante")
                         ];
             }
 
@@ -1946,7 +1953,7 @@ class SellPosController extends Controller
             return view('sale_pos.partials.show_invoice')
                     ->with(compact('receipt', 'title'));
         } else {
-            die(__("messages.something_went_wrong"));
+            die(__("messages.something_went_wrong"."(en mostrador)"));
         }
     }
 
@@ -2113,7 +2120,7 @@ class SellPosController extends Controller
             \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
             
             $output = ['success' => 0,
-                            'msg' => trans("messages.something_went_wrong")
+                            'msg' => trans("messages.something_went_wrong"."(toggle)")
                         ];
         }
 
@@ -2263,7 +2270,7 @@ class SellPosController extends Controller
             DB::rollBack();
 
             \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
-            $msg = trans("messages.something_went_wrong");
+            $msg = trans("messages.something_went_wrong"."(place order api)");
                 
             if (get_class($e) == \App\Exceptions\PurchaseSellMismatch::class) {
                 $msg = $e->getMessage();

@@ -219,8 +219,8 @@
                             @if(!empty($line['product_expiry'])), {{$line['product_expiry_label']}}:  {{$line['product_expiry']}} @endif 
                         </td>
 						<td>{{$line['quantity']}} {{$line['units']}} </td>
-						<td>{{bcdiv($line['unit_price_inc_tax']*1.18, 1, 2)}}</td>
-						<td>{{bcdiv($line['line_total']*1.18, 1, 2)}}</td>
+						<td>{{bcdiv(str_replace(',','',$line['unit_price_inc_tax'])*1.18, 1, 2)}}</td>
+						<td>{{bcdiv(str_replace(',','',$line['line_total'])*1.18, 1, 2)}}</td>
 					</tr>
 					@if(!empty($line['modifiers']))
 						@foreach($line['modifiers'] as $modifier)
@@ -247,24 +247,13 @@
 </div>
 
 <div class="row">
-	
 	<div class="col-md-12"><hr/></div>
-
-
 
 	<div class="col-xs-6">
 
 		<table class="table table-condensed">
 
-			@if(!empty($receipt_details->payments))
-				@foreach($receipt_details->payments as $payment)
-					<tr>
-						<td>{{$payment['method']}}</td>
-						<td>{{$payment['amount']}}</td>
-						<!--<td>{{$payment['date']}}</td>-->
-					</tr>
-				@endforeach
-			@endif
+			
 
 			<!-- Total Paid
 			@if(!empty($receipt_details->total_paid))
