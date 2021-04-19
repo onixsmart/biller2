@@ -626,14 +626,9 @@ class SellPosController extends Controller
                     $solesfl = substr($receipt_details->total, 3);
                     $solesfl = str_replace(',','',$solesfl);
                     //\Debugbar::info("total final: ".$solesfl);
-                    // $fl = floatval("40.20");
+                    //$fl = floatval("18040.20");
                     $fl = number_format($solesfl, 2);
-                    if($fl>999){
-                        $solesLetra = "";
-                    }else{
-                        $solesLetra = "SON ".strtoupper($this->num2letras($fl));
-                    }
-                    
+                    $solesLetra = "SON ".strtoupper($this->num2letras($fl));
                     // $solesLetra = $receipt_details->tax_info1;
                     // print_r($receipt_details);
                     $titulo = $this->getTituloInvoice($this->getPrefijo($receipt_details->invoice_no));

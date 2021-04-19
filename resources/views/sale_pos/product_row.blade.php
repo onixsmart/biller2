@@ -35,10 +35,10 @@
 			$unit_price_inc_tax = $product->sell_price_inc_tax;
 			if($hide_tax == 'hide'){
 				$tax_id = null;
-				$unit_price_inc_tax = $product->default_sell_price;
+				$unit_price_inc_tax = $product->sell_price_inc_tax/1.18;
 			}
 		@endphp
-
+			<!-- Andres: He cambiado la variable "default_sell_price" a "sell_price_inc_tax/1.18" en la linea 38, para calcular el igv correctamente -->
 		<div class="modal fade row_edit_product_price_model" id="row_edit_product_price_modal_{{$row_count}}" tabindex="-1" role="dialog">
 			@include('sale_pos.partials.row_edit_product_price_modal')
 		</div>
@@ -213,7 +213,7 @@
 
 		<input type="hidden" class="base_unit_multiplier" name="products[{{$row_count}}][base_unit_multiplier]" value="{{$multiplier}}">
 
-		<input type="hidden" class="hidden_base_unit_sell_price" value="{{$product->default_sell_price / $multiplier}}">
+		<input type="hidden" class="hidden_base_unit_sell_price" value="{{$product->sell_price_inc_tax/1.18 / $multiplier}}">
 		
 		{{-- Hidden fields for combo products --}}
 		@if($product->product_type == 'combo')
@@ -266,7 +266,8 @@
 		</td>
 	@endif
 	<td class="{{$hide_tax}}">
-		<input type="text" name="products[{{$row_count}}][unit_price_inc_tax]" class="form-control pos_unit_price_inc_tax input_number" value="{{@num_format($unit_price_inc_tax)}}" @if(!$edit_price) readonly @endif @if(!empty($pos_settings['enable_msp'])) data-rule-min-value="{{$unit_price_inc_tax}}" data-msg-min-value="{{__('lang_v1.minimum_selling_price_error_msg', ['price' => @num_format($unit_price_inc_tax)])}}" @endif>
+		<!-- Andres: He cambiado el formato num_format a floatval en la siguiente linea, para calcular el igv correctamente -->
+		<input type="text" name="products[{{$row_count}}][unit_price_inc_tax]" class="form-control pos_unit_price_inc_tax input_number" value="{{@floatval($unit_price_inc_tax)}}" @if(!$edit_price) readonly @endif @if(!empty($pos_settings['enable_msp'])) data-rule-min-value="{{$unit_price_inc_tax}}" data-msg-min-value="{{__('lang_v1.minimum_selling_price_error_msg', ['price' => @floatval($unit_price_inc_tax)])}}" @endif>
 	</td>
 	<td class="text-center v-center">
 		@php

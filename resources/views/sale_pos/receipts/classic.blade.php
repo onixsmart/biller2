@@ -169,7 +169,7 @@
 		        
 				<!-- Waiter info -->
 				@if(!empty($receipt_details->service_staff_label) || !empty($receipt_details->service_staff))
-		        	<br/>
+		        	
 					@if(!empty($receipt_details->service_staff_label))
 						<b>{!! $receipt_details->service_staff_label !!}</b>
 					@endif
@@ -181,7 +181,7 @@
 	
 	@if(!empty($receipt_details->defects_label) || !empty($receipt_details->repair_defects))
 		<div class="col-xs-12">
-			<br>
+			
 			@if(!empty($receipt_details->defects_label))
 				<b>{!! $receipt_details->defects_label !!}</b>
 			@endif
@@ -219,8 +219,8 @@
                             @if(!empty($line['product_expiry'])), {{$line['product_expiry_label']}}:  {{$line['product_expiry']}} @endif 
                         </td>
 						<td>{{$line['quantity']}} {{$line['units']}} </td>
-						<td>{{bcdiv(str_replace(',','',$line['unit_price_inc_tax'])*1.18, 1, 2)}}</td>
-						<td>{{bcdiv(str_replace(',','',$line['line_total'])*1.18, 1, 2)}}</td>
+						<td>{{bcdiv(str_replace(',','',$line['unit_price']), 1, 2)}}</td>
+						<td>{{bcdiv(str_replace(',','',$line['unit_price'])*$line['quantity'], 1, 2)}}</td>
 					</tr>
 					@if(!empty($line['modifiers']))
 						@foreach($line['modifiers'] as $modifier)
@@ -247,7 +247,7 @@
 </div>
 
 <div class="row">
-	<div class="col-md-12"><hr/></div>
+	
 
 	<div class="col-xs-6">
 
@@ -303,7 +303,7 @@
 							{!! $receipt_details->subtotal_label !!}
 						</th>
 						<td>
-							{{$receipt_details->subtotal}}
+							S/. {{@num_format(substr(str_replace(',','',$receipt_details->total), 3)/1.18)}}
 						</td>
 					</tr>
 					
@@ -351,7 +351,7 @@
 								{!! $receipt_details->tax_label !!}
 							</th>
 							<td>
-								(+) {{$receipt_details->tax}}
+								(+) S/. {{@num_format(substr(str_replace(',','',$receipt_details->total), 3)-substr(str_replace(',','',$receipt_details->total), 3)/1.18)}}
 							</td>
 						</tr>
 					@endif

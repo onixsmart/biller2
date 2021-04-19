@@ -44,19 +44,22 @@
 		$unit_price_inc_tax = $product->sell_price_inc_tax;
 		if($hide_tax == 'hide'){
 			$tax_id = null;
-			$unit_price_inc_tax = $product->default_sell_price;
+			$unit_price_inc_tax = $product->sell_price_inc_tax/1.18;
 		}
 	@endphp
+	<!-- Andres: He cambiado la variable "default_sell_price" a "sell_price_inc_tax/1.18" en la linea 47, para calcular el igv correctamente -->
+
 	<td class="{{$hide_tax}}">
 		<input type="hidden" name="products[{{$row_count}}][item_tax]" class="form-control item_tax">
 		
 		{!! Form::select("products[$row_count][tax_id]", $tax_dropdown['tax_rates'], $tax_id, ['placeholder' => 'Select', 'class' => 'form-control tax_id'], $tax_dropdown['attributes']); !!}
 	</td>
 	<td class="{{$hide_tax}}">
-		<input type="text" name="products[{{$row_count}}][unit_price_inc_tax]" class="form-control pos_unit_price_inc_tax input_number" value="{{@num_format($unit_price_inc_tax)}}">
+		<!-- Andres: He cambiado el formato num_format a floatval en la siguiente linea, para calcular el igv correctamente -->
+		<input type="text" name="products[{{$row_count}}][unit_price_inc_tax]" class="form-control pos_unit_price_inc_tax input_number" value="{{@floatval($unit_price_inc_tax)}}">
 	</td>
 	<td>
-		<input type="text" readonly name="products[{{$row_count}}][price]" class="form-control pos_line_total" value="{{@num_format($product->quantity_ordered*$unit_price_inc_tax )}}">
+		<input type="text" readonly name="products[{{$row_count}}][price]" class="form-control pos_line_total" value="{{@floatval($product->quantity_ordered*$unit_price_inc_tax )}}">
 	</td>
 	@if(session('business.enable_lot_number'))
         <td>

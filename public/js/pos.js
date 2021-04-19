@@ -264,10 +264,12 @@ $(document).ready(function () {
         }
         // var max_qty = parseFloat($(this).data('rule-max'));
         var entered_qty = __read_number($(this));
+        //console.log('cantidad: ' + entered_qty);
 
         var tr = $(this).parents('tr');
 
-        var unit_price_inc_tax = __read_number(tr.find('input.pos_unit_price_inc_tax'));
+        var unit_price_inc_tax = tr.find('input.pos_unit_price').val() / 1.18;
+        //console.log('valor sin igv: ' + unit_price_inc_tax);
         var line_total = entered_qty * unit_price_inc_tax;
         var subtotal_item = (line_total * 1.18).toFixed(1);
 
