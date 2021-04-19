@@ -563,7 +563,6 @@ class SellPosController extends Controller
 
         $business_details = $this->businessUtil->getDetails($business_id);
         $location_details = BusinessLocation::find($location_id);
-        
         if ($from_pos_screen && $location_details->print_receipt_on_invoice != 1) {
             return $output;
         }
@@ -595,9 +594,16 @@ class SellPosController extends Controller
             $output['printer_config'] = $this->businessUtil->printerConfig($business_id, $location_details->printer_id);
             $output['data'] = $receipt_details;
         } else {
+            //\Debugbar::info($receipt_details);
             $layout = !empty($receipt_details->design) ? 'sale_pos.receipts.' . $receipt_details->design : 'sale_pos.receipts.classic';
+            if (strlen($receipt_details->sub_heading_line1)==11){
+                $RUCEmpresa=$receipt_details->sub_heading_line1;
+            }else{
+                $RUCEmpresa=$receipt_details->sub_heading_line2;
+            }
+            
                 $contentQr =
-                    $this->getRuc($receipt_details->sub_heading_line1)."|".
+                    $this->getRuc($RUCEmpresa)."|".
                     $this->getCodInvoice($this->getPrefijo($receipt_details->invoice_no) )."|".
                     $this->getPrefijo($receipt_details->invoice_no)."|".
                     $this->getNumeroCorrelativo($receipt_details->invoice_no)."|".
@@ -605,7 +611,7 @@ class SellPosController extends Controller
                     $this->getTotal($receipt_details->total)."|".
                     $this->getFecha($receipt_details->invoice_date)."|".
                     "6"."|". //valor fijo es 6
-                    $this->getRucCliente($receipt_details->invoice_no);
+                    $this->getRucCliente($transaction_id);
 
                     // $this->getValorFijo()."|".
                     // $this->getRucCliente();
@@ -635,14 +641,14 @@ class SellPosController extends Controller
                     // $solesLetra = $receipt_details->tax_info1;
                     // print_r($receipt_details);
                     $titulo = $this->getTituloInvoice($this->getPrefijo($receipt_details->invoice_no));
-                    $RUCClient = $this->getRucCliente($receipt_details->invoice_no);
+                    $RUCClient = $this->getRucCliente($transaction_id);
                     $tipoCliente = $this->getTipoCliente($RUCClient);
-                    $clienteDirec = $this->getDireccionCliente($receipt_details->invoice_no);
+                    $clienteDirec = $this->getDireccionCliente($transaction_id);
                     $tituloFactura = $this->getTituloFact($this->getPrefijo($receipt_details->invoice_no));
 
             $output['html_content'] = view($layout, compact('receipt_details','solesLetra','contentQr','titulo','RUCClient','tipoCliente','clienteDirec', 'tituloFactura'))->render();
         }
-        
+        //\Debugbar::info($contentQr);
         return $output;
     }
 
@@ -663,7 +669,7 @@ class SellPosController extends Controller
         return $codInvoice;
     }
     function getDireccionCliente($tmp){
-        $cliente = DB::table('transactions')->where('invoice_no', $tmp)->value('contact_id');
+        $cliente = DB::table('transactions')->where('id', $tmp)->value('contact_id');
         $clienteDirec = DB::table('contacts')->where('id', $cliente)->value('landmark');
         return $clienteDirec;
     }
@@ -671,7 +677,7 @@ class SellPosController extends Controller
         return "21212";
     }
     function getRucCliente($tmp){
-        $cliente = DB::table('transactions')->where('invoice_no', $tmp)->value('contact_id');
+        $cliente = DB::table('transactions')->where('id', $tmp)->value('contact_id');
         $clienteRUC = DB::table('contacts')->where('id', $cliente)->value('contact_id');
         return $clienteRUC;
         // contacts->contact_id
