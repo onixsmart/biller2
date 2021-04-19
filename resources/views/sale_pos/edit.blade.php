@@ -133,7 +133,7 @@
 									<input type="hidden" id="default_customer_id" 
 									value="{{ $transaction->contact->id }}" >
 									<input type="hidden" id="default_customer_name" 
-									value="{{ $transaction->contact->name }}" >
+									value="{{ $transaction->contact->name }} - {{ $transaction->contact->contact_id }}" >
 									{!! Form::select('contact_id', 
 										[], null, ['class' => 'form-control mousetrap', 'id' => 'customer_id', 'placeholder' => 'Enter Customer name / phone', 'required', 'style' => 'width: 100%;']); !!}
 									<span class="input-group-btn">
