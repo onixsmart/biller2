@@ -220,7 +220,7 @@
                         </td>
 						<td>{{$line['quantity']}} {{$line['units']}} </td>
 						<td>{{bcdiv(str_replace(',','',$line['unit_price']), 1, 2)}}</td>
-						<td>{{bcdiv(str_replace(',','',$line['unit_price'])*$line['quantity'], 1, 2)}}</td>
+						<td>{{bcdiv(str_replace(',','',$line['unit_price'])*str_replace(',','',$line['quantity']), 1, 2)}}</td>
 					</tr>
 					@if(!empty($line['modifiers']))
 						@foreach($line['modifiers'] as $modifier)

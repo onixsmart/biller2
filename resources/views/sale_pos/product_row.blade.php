@@ -272,13 +272,13 @@
 	<td class="text-center v-center">
 		@php
 			$subtotal_type = !empty($pos_settings['is_pos_subtotal_editable']) ? 'text' : 'hidden';
-
+			\Debugbar::info($product);
 		@endphp
 		<input type="{{$subtotal_type}}" class="form-control pos_line_total @if(!empty($pos_settings['is_pos_subtotal_editable'])) input_number @endif" value="{{@num_format($product->quantity_ordered*$unit_price_inc_tax )}}">
-		<span class="display_currency pos_line_total_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) hide @endif" data-currency_symbol="true">{{$product->quantity_ordered*$unit_price_inc_tax}}</span>
+		<span class="display_currency pos_line_total_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) hide @endif" data-currency_symbol="true">{{$product->quantity_ordered*$product->sell_price_inc_tax}}</span>
 	</td>
 	<td class="text-center v-center">
-		<span class="display_currency pos_line_importe_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) @endif" data-currency_symbol="true">{{$product->quantity_ordered*$unit_price_inc_tax*1.18}}</span>
+		<span class="display_currency pos_line_importe_text @if(!empty($pos_settings['is_pos_subtotal_editable'])) @endif" data-currency_symbol="true">{{$product->quantity_ordered*$product->default_sell_price}}</span>
 	</td>
 	<td class="text-center">
 		<h3><i class="fa fa-close text-danger pos_remove_row cursor-pointer" aria-hidden="true"></i></h3>

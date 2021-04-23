@@ -162,16 +162,16 @@ class FacturaSunatController extends Controller
                }
             }
          $correlativo=$numero_comprobante;
-         
+         $fechaventa=$datos->transaction_date;
          //Creamos la factura
          $invoice = new Invoice();
          $invoice ->setUblVersion('2.1')
-            ->setFecVencimiento(new \DateTime())
+            ->setFecVencimiento(new \DateTime($fechaventa))
             ->setTipoOperacion('0101')
             ->setTipoDoc('01') //codigo de factura
             ->setSerie($serie)
             ->setCorrelativo($correlativo)
-            ->setFechaEmision(new \DateTime())
+            ->setFechaEmision(new \DateTime($fechaventa))
             ->setTipoMoneda('PEN')
             ->setClient($client)
             ->setMtoOperGravadas($datos->total_before_tax)
@@ -180,7 +180,7 @@ class FacturaSunatController extends Controller
             ->setValorVenta($datos->total_before_tax)
             ->setMtoImpVenta($datos->final_total)
             ->setCompany($company);
-         
+         //\Debugbar::info($invoice);
          //consultamos los detalles de la venta
          
          $detalles = DB::table('transaction_sell_lines')->where('transaction_sell_lines.transaction_id', $transaction_id)
