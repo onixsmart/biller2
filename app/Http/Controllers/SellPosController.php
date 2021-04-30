@@ -1405,7 +1405,8 @@ class SellPosController extends Controller
                         //Delete Cash register transactions
                         $transaction->cash_register_payments()->delete();
 
-                        $transaction->delete();
+                        //$transaction->delete();
+                        $this->UpdateEstadoSunat($id, '0');
                     }
                 }
 
@@ -1422,10 +1423,23 @@ class SellPosController extends Controller
                 \Log::emergency("File:" . $e->getFile(). "Line:" . $e->getLine(). "Message:" . $e->getMessage());
 
                 $output['success'] = false;
-                $output['msg'] = trans("messages.something_went_wrong"."(al eliminar)");
+                $output['msg'] = trans("messages.something_went_wrong");
             }
 
             return $output;
+        }
+    }
+
+    public function UpdateEstadoSunat($idventa, $idestado){
+        try
+        {
+           $fecha_actual=date("Y-m-d H:i:s");
+           DB::table('transactions')
+              ->where('id', $idventa)
+              ->update(['estado_sunat' => $idestado, 'updated_at' => $fecha_actual]);
+  
+        } catch (Exception $e) {
+           echo "no se realizó el cambio de estado";
         }
     }
 
