@@ -658,25 +658,27 @@ class ContactController extends Controller
 
                     $person = $cs->get($documento);
                     if (!$person) {
-                        throw new \Exception("no existe");
+                        throw new \Exception("no existe (DNI)");
                         //return;
                     }
                     $respuesta = $person;
 
                 }elseif(strlen($documento)==11){
                     //$ruc = '20100070970';
-                    //$ruc = '20100070970';
+                    //$documento = '20100070970';
 
                     $factory = new RucFactory();
                     $cs = $factory->create();
 
                     $company = $cs->get($documento);
                     if (!$company) {
-                        throw new \Exception("no existe");
+                        throw new \Exception("no existe (RUC: ".$documento.")");
                         //return;
                     }
 
                     $respuesta = $company;
+
+                    
                 }else{
                     throw new \Exception("es inválido");
                 }
